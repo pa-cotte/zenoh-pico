@@ -241,11 +241,11 @@ set(Z_TRANSPORT_LEASE 10000 CACHE STRING "Link lease duration in milliseconds to
 set(Z_TRANSPORT_LEASE_EXPIRE_FACTOR 3 CACHE STRING "Default session lease expire factor.")
 set(ZP_PERIODIC_SCHEDULER_MAX_TASKS 64 CACHE STRING "Maximum number of tasks in the periodic scheduler")
 
-set(Z_FEATURE_UNSTABLE_API 0 CACHE STRING "Toggle unstable Zenoh-C API")
+set(Z_FEATURE_UNSTABLE_API 1 CACHE STRING "Toggle unstable Zenoh-C API")
 set(Z_FEATURE_PUBLICATION 1 CACHE STRING "Toggle publication feature")
-set(Z_FEATURE_ADVANCED_PUBLICATION 0 CACHE STRING "Toggle advanced publication feature")
+set(Z_FEATURE_ADVANCED_PUBLICATION 1 CACHE STRING "Toggle advanced publication feature")
 set(Z_FEATURE_SUBSCRIPTION 1 CACHE STRING "Toggle subscription feature")
-set(Z_FEATURE_ADVANCED_SUBSCRIPTION 0 CACHE STRING "Toggle advanced subscription feature")
+set(Z_FEATURE_ADVANCED_SUBSCRIPTION 1 CACHE STRING "Toggle advanced subscription feature")
 set(Z_FEATURE_QUERY 1 CACHE STRING "Toggle query feature")
 set(Z_FEATURE_QUERYABLE 1 CACHE STRING "Toggle queryable feature")
 set(Z_FEATURE_LIVELINESS 1 CACHE STRING "Toggle liveliness feature")
@@ -277,7 +277,7 @@ set(Z_FEATURE_RX_CACHE 0 CACHE STRING "Toggle RX_CACHE")
 set(Z_FEATURE_UNICAST_PEER 1 CACHE STRING "Toggle Unicast peer mode")
 set(Z_FEATURE_AUTO_RECONNECT 1 CACHE STRING "Toggle automatic reconnection")
 set(Z_FEATURE_MULTICAST_DECLARATIONS 0 CACHE STRING "Toggle multicast resource declarations")
-set(Z_FEATURE_PERIODIC_TASKS 0 CACHE STRING "Toggle periodic task support")
+set(Z_FEATURE_PERIODIC_TASKS 1 CACHE STRING "Toggle periodic task support")
 set(Z_FEATURE_LOCAL_QUERYABLE 0 CACHE STRING "Toggle local queriables")
 
 # Add a warning message if someone tries to enable Z_FEATURE_LINK_SERIAL_USB directly
