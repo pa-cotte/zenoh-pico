@@ -578,7 +578,7 @@ z_result_t _z_listen_udp_multicast(_z_sys_net_socket_t *sock, const _z_sys_net_e
         //        default if used instead
         if (ret != _Z_RES_OK) {
             struct net_if *ifa = NULL;
-            ifa = net_if_get_default();
+            ifa = net_if_get_first_by_type(&NET_L2_GET_NAME(ETHERNET));
             if (ifa != NULL) {
                 // Join the multicast group
                 if (rep._iptcp->ai_family == AF_INET) {
@@ -638,7 +638,7 @@ void _z_close_udp_multicast(_z_sys_net_socket_t *sockrecv, _z_sys_net_socket_t *
         // FIXME: iface passed into the locator is being ignored
         //        default if used instead
         struct net_if *ifa = NULL;
-        ifa = net_if_get_default();
+        ifa = net_if_get_first_by_type(&NET_L2_GET_NAME(ETHERNET));
         if (ifa != NULL) {
             struct net_if_mcast_addr *mcast = NULL;
             if (rep._iptcp->ai_family == AF_INET) {
