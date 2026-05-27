@@ -12,26 +12,31 @@ config ZENOH_PICO_LINK_SERIAL
 
 config ZENOH_PICO_MULTI_THREAD
 	bool "Multithreading support"
+	default y
 	help
 	  Multithreading support
 
 config ZENOH_PICO_PUBLICATION
 	bool "Publication Support"
+	default y
 	help
 	  Publication support
 
 config ZENOH_PICO_SUBSCRIPTION
 	bool "Subscription Support"
+	default y
 	help
 	  Subscription Support
 
 config ZENOH_PICO_QUERY
 	bool "Query Support"
+	default y
 	help
 	  Query Support
 
 config ZENOH_PICO_QUERYABLE
 	bool "Queryable Support"
+	default y
 	help
 	  Queryable Support
 
@@ -52,11 +57,13 @@ config ZENOH_PICO_LINK_UDP_UNICAST
 
 config ZENOH_PICO_LINK_UDP_MULTICAST
 	bool "UDP Multicast"
+	default y
 	help
 	  UDP Multicast
 
 config ZENOH_PICO_SCOUTING
 	bool "Scouting UDP"
+	default y
 	help
 	  Scouting UDP
 
@@ -67,31 +74,37 @@ config ZENOH_PICO_LINK_WS
 
 config ZENOH_PICO_MULTICAST_TRANSPORT
 	bool "Multicast Transport"
+	default y
 	help
 	  Multicast Transport Support
 
 config ZENOH_PICO_LOCAL_SUBSCRIBER
 	bool "Local Subscriber"
+	default y
 	help
 	  Enable local subscriber (same-session pub/sub)
 
 config ZENOH_PICO_LOCAL_QUERYABLE
 	bool "Local Queryable"
+	default y
 	help
 	  Enable local queryable (same-session query/queryable)
 
 config ZENOH_PICO_INTEREST
 	bool "Interest Support"
+	default y
 	help
 	  Interest Support for advanced pub/sub features
 
 config ZENOH_PICO_ADVANCED_PUBLICATION
 	bool "Advanced Publication"
+	default y
 	help
 	  Advanced Publication Support
 
 config ZENOH_PICO_ADVANCED_SUBSCRIPTION
 	bool "Advanced Subscription"
+	default y
 	help
 	  Advanced Subscription Support
 
