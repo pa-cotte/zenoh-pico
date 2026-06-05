@@ -65,5 +65,34 @@ config ZENOH_PICO_LINK_WS
 	help
 	  WS Link
 
-endif
+config ZENOH_PICO_MULTICAST_TRANSPORT
+	bool "Multicast Transport"
+	help
+	  Multicast Transport Support
 
+config ZENOH_PICO_LOCAL_SUBSCRIBER
+	bool "Local Subscriber"
+	help
+	  Enable local subscriber (same-session pub/sub)
+
+config ZENOH_PICO_LOCAL_QUERYABLE
+	bool "Local Queryable"
+	help
+	  Enable local queryable (same-session query/queryable)
+
+config ZENOH_PICO_INTEREST
+	bool "Interest Support"
+	help
+	  Interest Support for advanced pub/sub features
+
+config ZENOH_PICO_ADVANCED_PUBLICATION
+	bool "Advanced Publication"
+	help
+	  Advanced Publication Support
+
+config ZENOH_PICO_ADVANCED_SUBSCRIPTION
+	bool "Advanced Subscription"
+	help
+	  Advanced Subscription Support
+
+endif
