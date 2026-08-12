@@ -16,6 +16,16 @@ config ZENOH_PICO_MULTI_THREAD
 	help
 	  Multithreading support
 
+config ZENOH_PICO_THREADS_NUM
+	int "Number of preallocated pthread stacks"
+	depends on ZENOH_PICO_MULTI_THREAD
+	default 8
+	range 1 64
+	help
+	  Number of preallocated pthread stacks used when no explicit thread
+	  attributes are provided (attr == NULL), therefore limiting the maximum number
+	  of threads.
+
 config ZENOH_PICO_PUBLICATION
 	bool "Publication Support"
 	default y
