@@ -272,7 +272,7 @@ void _z_close_tcp(_z_sys_net_socket_t *sock) {
 size_t _z_read_tcp(const _z_sys_net_socket_t sock, uint8_t *ptr, size_t len) {
     ssize_t rb = recv(sock._fd, ptr, len, 0);
     if (rb < (ssize_t)0) {
-        rb = SIZE_MAX;
+        rb = ((errno == EAGAIN) || (errno == EWOULDBLOCK) || (errno == EINTR)) ? (ssize_t)SIZE_MAX : 0;
     }
 
     return rb;
