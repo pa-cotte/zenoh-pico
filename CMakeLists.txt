@@ -237,8 +237,8 @@ set(FRAG_MAX_SIZE 4096 CACHE STRING "Use this to override the maximum size for f
 set(BATCH_UNICAST_SIZE 2048 CACHE STRING "Use this to override the maximum unicast batch size")
 set(BATCH_MULTICAST_SIZE 2048 CACHE STRING "Use this to override the maximum multicast batch size")
 set(Z_CONFIG_SOCKET_TIMEOUT 100 CACHE STRING "Default socket timeout in milliseconds")
-set(Z_TRANSPORT_LEASE 10000 CACHE STRING "Link lease duration in milliseconds to announce to other zenoh nodes")
-set(Z_TRANSPORT_LEASE_EXPIRE_FACTOR 3 CACHE STRING "Default session lease expire factor.")
+set(Z_TRANSPORT_LEASE 600000 CACHE STRING "Link lease duration in milliseconds to announce to other zenoh nodes")
+set(Z_TRANSPORT_LEASE_EXPIRE_FACTOR 1 CACHE STRING "Default session lease expire factor.")
 set(ZP_PERIODIC_SCHEDULER_MAX_TASKS 64 CACHE STRING "Maximum number of tasks in the periodic scheduler")
 
 set(Z_FEATURE_UNSTABLE_API 1 CACHE STRING "Toggle unstable Zenoh-C API")
