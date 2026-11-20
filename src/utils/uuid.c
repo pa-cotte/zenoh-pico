@@ -17,6 +17,7 @@
 #include <ctype.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "zenoh-pico/api/types.h"
 #include "zenoh-pico/utils/pointers.h"
@@ -45,13 +46,18 @@ _z_id_t _z_id_from_string(const _z_string_t *str) {
         return _z_id_empty();
     }
 
-    const char *s = _z_string_data(str);
+    const char *data = _z_string_data(str);
     size_t len = _z_string_len(str);
 
-    // Expect exactly ZENOH_ID_SIZE * 2 lowercase hex characters
-    if (s == NULL || len != ZENOH_ID_SIZE * 2) {
+    // Expect up to ZENOH_ID_SIZE * 2 lowercase hex characters: zenoh in Rust writes a ZID without its leading zeros,
+    // so that one in sixteen ZIDs has 31 characters or fewer.
+    if (data == NULL || len == 0 || len > ZENOH_ID_SIZE * 2) {
         return _z_id_empty();
     }
+    char s[ZENOH_ID_SIZE * 2];
+    size_t padding = ZENOH_ID_SIZE * 2 - len;
+    memset(s, '0', padding);
+    memcpy(&s[padding], data, len);
 
     z_id_t id;
     for (size_t i = 0; i < ZENOH_ID_SIZE; i++) {
