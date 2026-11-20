@@ -33,6 +33,10 @@ configure_zenoh_feature(CONFIG_ZENOH_PICO_INTEREST)
 configure_zenoh_feature(CONFIG_ZENOH_PICO_ADVANCED_PUBLICATION)
 configure_zenoh_feature(CONFIG_ZENOH_PICO_ADVANCED_SUBSCRIPTION)
 
+if(CONFIG_ZENOH_PICO_LOG_LEVEL GREATER 0)
+  zephyr_compile_definitions(ZENOH_DEBUG=${CONFIG_ZENOH_PICO_LOG_LEVEL})
+endif()
+
 
 file(GLOB_RECURSE Sources
   "../src/api/*.c"

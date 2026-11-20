@@ -26,6 +26,15 @@ config ZENOH_PICO_THREADS_NUM
 	  attributes are provided (attr == NULL), therefore limiting the maximum number
 	  of threads.
 
+config ZENOH_PICO_LOG_LEVEL
+	int "Log level"
+	default 0
+	range 0 3
+	help
+	  0 builds zenoh-pico without logs, 1 prints its errors, 2 its errors,
+	  warnings and information, 3 everything up to debug. The logs go
+	  through printf, outside the Zephyr logging subsystem.
+
 config ZENOH_PICO_PUBLICATION
 	bool "Publication Support"
 	default y
