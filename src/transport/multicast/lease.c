@@ -60,13 +60,15 @@ z_result_t _zp_multicast_send_keep_alive(_z_transport_multicast_t *ztm) {
 
 static void _zp_multicast_failed(_z_transport_multicast_t *ztm) {
     _ZP_UNUSED(ztm);
+    _z_session_t *zn = _z_transport_common_get_session(&ztm->_common);
 
 #if Z_FEATURE_LIVELINESS == 1 && Z_FEATURE_SUBSCRIPTION == 1
-    _z_liveliness_subscription_undeclare_all(_z_transport_common_get_session(&ztm->_common));
+    _z_liveliness_subscription_undeclare_all(zn);
 #endif
 #if Z_FEATURE_AUTO_RECONNECT == 1
     _z_session_rc_t zs = _z_session_weak_upgrade(&ztm->_common._session);
 #endif
+    _z_session_set_transport_ready(zn, false);
     _z_multicast_transport_clear(ztm, true);
 
 #if Z_FEATURE_AUTO_RECONNECT == 1

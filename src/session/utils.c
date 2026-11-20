@@ -61,10 +61,16 @@ z_result_t _z_session_init(_z_session_t *zn, const _z_id_t *zid) {
     if (ret != _Z_RES_OK) {
         return ret;
     }
+    ret = _z_mutex_rec_init(&zn->_mutex_transport);
+    if (ret != _Z_RES_OK) {
+        _z_mutex_drop(&zn->_mutex_inner);
+        return ret;
+    }
     zn->_mutex_inner_initialized = true;
 #endif
     zn->_mode = Z_WHATAMI_CLIENT;
     zn->_tp._type = _Z_TRANSPORT_NONE;
+    zn->_tp_ready = false;
 #if Z_FEATURE_MULTI_THREAD == 1
     zn->_read_task_should_run = false;
     zn->_lease_task_should_run = false;
@@ -117,6 +123,7 @@ z_result_t _z_session_init(_z_session_t *zn, const _z_id_t *zid) {
     if (ret != _Z_RES_OK) {
         zn->_mutex_inner_initialized = false;
         _z_mutex_drop(&zn->_mutex_inner);
+        _z_mutex_rec_drop(&zn->_mutex_transport);
         _Z_ERROR_RETURN(ret);
     }
 #endif
@@ -146,6 +153,7 @@ void _z_session_clear(_z_session_t *zn) {
         _z_network_message_slist_free(&zn->_declaration_cache);
 #endif
 
+        _z_session_set_transport_ready(zn, false);
         _z_close(zn);
         // Clear Zenoh PID
         // Clean up transports
@@ -198,8 +206,17 @@ void _z_session_clear(_z_session_t *zn) {
     if (zn->_mutex_inner_initialized) {
         zn->_mutex_inner_initialized = false;
         _z_mutex_drop(&zn->_mutex_inner);
+        _z_mutex_rec_drop(&zn->_mutex_transport);
     }
 #endif  // Z_FEATURE_MULTI_THREAD == 1
+}
+
+// Taking the transport mutex waits for a send in progress: once a transport is marked not ready, no sender uses it any
+// more, so that it can be cleared and rebuilt.
+void _z_session_set_transport_ready(_z_session_t *zn, bool ready) {
+    _z_session_transport_mutex_lock(zn);
+    zn->_tp_ready = ready;
+    _z_session_transport_mutex_unlock(zn);
 }
 
 z_result_t _z_session_close(_z_session_t *zn, uint8_t reason) {
