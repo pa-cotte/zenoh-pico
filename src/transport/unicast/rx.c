@@ -125,9 +125,12 @@ static z_result_t _z_unicast_handle_frame(_z_transport_unicast_t *ztu, uint8_t h
     }
     // Handle all the zenoh message, one by one
     // From this point, memory cleaning must be handled by the network message layer
-    _z_network_message_t curr_nmsg = {0};
     _z_arc_slice_t arcs = _z_arc_slice_empty();
     while (_z_zbuf_len(msg->_payload) > 0) {
+        // The decoders only write the fields a message carries: each message starts from a cleared one, or it would
+        // inherit the fields of the previous message of the frame (a PUSH without attachment got the payload flags of
+        // a preceding RESPONSE as an attachment, which freed address 1).
+        _z_network_message_t curr_nmsg = {0};
         _Z_RETURN_IF_ERR(_z_network_message_decode(&curr_nmsg, msg->_payload, &arcs, (uintptr_t)&peer->common));
         curr_nmsg._reliability = tmsg_reliability;
         // A message the session cannot apply, such as the undeclaration of an entity it never saw, only concerns
