@@ -43,11 +43,14 @@ typedef struct _z_session_t {
 #if Z_FEATURE_MULTI_THREAD == 1
     bool _mutex_inner_initialized;
     _z_mutex_t _mutex_inner;
+    _z_mutex_rec_t _mutex_transport;
 #endif  // Z_FEATURE_MULTI_THREAD == 1
 
     // Zenoh-pico is considering a single transport per session.
     z_whatami_t _mode;
     _z_transport_t _tp;
+    // Senders use _tp only while it is ready, under _mutex_transport: a reconnection clears and rebuilds it in place.
+    bool _tp_ready;
 
 #if Z_FEATURE_MULTI_THREAD == 1
     bool _read_task_should_run;

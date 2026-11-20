@@ -19,6 +19,7 @@
 #include "zenoh-pico/protocol/codec/network.h"
 #include "zenoh-pico/protocol/codec/transport.h"
 #include "zenoh-pico/protocol/definitions/transport.h"
+#include "zenoh-pico/session/utils.h"
 #include "zenoh-pico/transport/raweth/tx.h"
 #include "zenoh-pico/transport/transport.h"
 #include "zenoh-pico/transport/utils.h"
@@ -496,6 +497,11 @@ z_result_t _z_send_n_msg(_z_session_t *zn, const _z_network_message_t *z_msg, z_
     }
 #endif
     z_result_t ret = _Z_RES_OK;
+    _z_session_transport_mutex_lock(zn);
+    if (!zn->_tp_ready) {
+        _z_session_transport_mutex_unlock(zn);
+        return _Z_ERR_TRANSPORT_NOT_AVAILABLE;
+    }
     // Call transport function
     switch (zn->_tp._type) {
         case _Z_TRANSPORT_UNICAST_TYPE: {
@@ -537,6 +543,7 @@ z_result_t _z_send_n_msg(_z_session_t *zn, const _z_network_message_t *z_msg, z_
             ret = _Z_ERR_TRANSPORT_NOT_AVAILABLE;
             break;
     }
+    _z_session_transport_mutex_unlock(zn);
     return ret;
 }
 

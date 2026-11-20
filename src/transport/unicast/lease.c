@@ -17,6 +17,7 @@
 #include "zenoh-pico/session/interest.h"
 #include "zenoh-pico/session/liveliness.h"
 #include "zenoh-pico/session/query.h"
+#include "zenoh-pico/session/utils.h"
 #include "zenoh-pico/system/common/platform.h"
 #include "zenoh-pico/transport/common/tx.h"
 #include "zenoh-pico/transport/transport.h"
@@ -44,8 +45,9 @@ z_result_t _zp_unicast_send_keep_alive(_z_transport_unicast_t *ztu) {
 #if Z_FEATURE_MULTI_THREAD == 1 && Z_FEATURE_UNICAST_TRANSPORT == 1
 
 static void _zp_unicast_failed(_z_transport_unicast_t *ztu) {
+    _z_session_t *zn = _z_transport_common_get_session(&ztu->_common);
 #if Z_FEATURE_LIVELINESS == 1 && Z_FEATURE_SUBSCRIPTION == 1
-    _z_liveliness_subscription_undeclare_all(_z_transport_common_get_session(&ztu->_common));
+    _z_liveliness_subscription_undeclare_all(zn);
 #endif
 #if Z_FEATURE_AUTO_RECONNECT == 1
     _z_session_rc_t zs = _z_session_weak_upgrade(&ztu->_common._session);
@@ -57,6 +59,7 @@ static void _zp_unicast_failed(_z_transport_unicast_t *ztu) {
     }
     ztu->_common._lease_task_running = false;
 
+    _z_session_set_transport_ready(zn, false);
     _z_unicast_transport_close(ztu, _Z_CLOSE_EXPIRED);
     _z_unicast_transport_clear(ztu, true);
 
