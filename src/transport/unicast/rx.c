@@ -130,7 +130,12 @@ static z_result_t _z_unicast_handle_frame(_z_transport_unicast_t *ztu, uint8_t h
     while (_z_zbuf_len(msg->_payload) > 0) {
         _Z_RETURN_IF_ERR(_z_network_message_decode(&curr_nmsg, msg->_payload, &arcs, (uintptr_t)&peer->common));
         curr_nmsg._reliability = tmsg_reliability;
-        _Z_RETURN_IF_ERR(_z_handle_network_message(&ztu->_common, &curr_nmsg, &peer->common));
+        // A message the session cannot apply, such as the undeclaration of an entity it never saw, only concerns
+        // itself: returning the error would stop the read task and leave the session deaf until its lease expires.
+        z_result_t ret = _z_handle_network_message(&ztu->_common, &curr_nmsg, &peer->common);
+        if (ret != _Z_RES_OK) {
+            _Z_ERROR("Network message dropped, its processing failed: %d", ret);
+        }
     }
     return _Z_RES_OK;
 }
